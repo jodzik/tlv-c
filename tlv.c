@@ -137,8 +137,43 @@ uint8_t* tlv__add_tag(struct TlvCreator* creator, uint8_t tag, uint8_t len) {
     return &creator->buf[creator->pos - len];
 }
 
+uint8_t* tlv__add_tag_subtag(
+    struct TlvCreator* creator,
+    uint8_t const tag,
+    uint8_t const subtag,
+    uint8_t const len)
+{
+    uint8_t* const data = tlv__add_tag(creator, tag, len + 1);
+    if (NULL == data) {
+        return NULL;
+    }
+    data[0] = subtag;
+    return &data[1];
+}
+
+int tlv__add_tag_i8(struct TlvCreator* const creator, uint8_t const tag, int8_t const val) {
+    uint8_t* const tlv_data = tlv__add_tag(creator, tag, sizeof(val));
+    ASSERTs(tlv_data != NULL, ER_OVERFLOW);
+    memcpy(tlv_data, &val, sizeof(val));
+
+    return 0;
+}
+
 int tlv__add_tag_u8(struct TlvCreator* const creator, uint8_t const tag, uint8_t const val) {
     uint8_t* const tlv_data = tlv__add_tag(creator, tag, sizeof(val));
+    ASSERTs(tlv_data != NULL, ER_OVERFLOW);
+    tlv_data[0] = val;
+
+    return 0;
+}
+
+int tlv__add_tag_u8_subtag(
+    struct TlvCreator* const creator,
+    uint8_t const tag,
+    uint8_t const subtag,
+    uint8_t const val)
+{
+    uint8_t* const tlv_data = tlv__add_tag_subtag(creator, tag, subtag, sizeof(val));
     ASSERTs(tlv_data != NULL, ER_OVERFLOW);
     tlv_data[0] = val;
 
