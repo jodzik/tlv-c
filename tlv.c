@@ -41,11 +41,13 @@ void tlv__reset_scan(struct TlvScan* const scan) {
 }
 
 struct Tlv const* tlv__find(struct TlvScan* scan, uint8_t const tag) {
-    struct Tlv const* tlv = NULL;
-
     tlv__reset_scan(scan);
 
-    while (tlv = tlv__next(scan)) {
+    while (true) {
+        struct Tlv const* const tlv = tlv__next(scan);
+        if (NULL == tlv) {
+            break;
+        }
         if (tlv->tag == tag) {
             return tlv;
         }
