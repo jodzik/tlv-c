@@ -48,6 +48,7 @@ int tlv__add_tag_u8(struct TlvCreator* creator, uint8_t tag, uint8_t val);
 int tlv__add_tag_u8_subtag(struct TlvCreator* creator, uint8_t tag, uint8_t subtag, uint8_t val);
 int tlv__add_tag_bool(struct TlvCreator* creator, uint8_t tag, bool val);
 int tlv__add_tag_u16(struct TlvCreator* creator, uint8_t tag, uint16_t val);
+int tlv__add_tag_u16_subtag(struct TlvCreator* creator, uint8_t tag, uint8_t subtag, uint16_t val);
 int tlv__add_tag_u32(struct TlvCreator* creator, uint8_t tag, uint32_t val);
 int tlv__add_tag_data(struct TlvCreator* creator, uint8_t tag, uint8_t const* data, uint8_t data_size);
 int tlv__add_tag_str(struct TlvCreator* creator, uint8_t tag, char const* str, uint8_t str_size);

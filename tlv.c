@@ -196,6 +196,19 @@ int tlv__add_tag_u16(struct TlvCreator* const creator, uint8_t const tag, uint16
     return 0;
 }
 
+int tlv__add_tag_u16_subtag(
+    struct TlvCreator* const creator,
+    uint8_t const tag,
+    uint8_t const subtag,
+    uint16_t const val)
+{
+    uint8_t* const tlv_data = tlv__add_tag_subtag(creator, tag, subtag, sizeof(val));
+    ASSERTs(tlv_data != NULL, ER_OVERFLOW);
+    u16_to_be(tlv_data, val);
+
+    return 0;
+}
+
 int tlv__add_tag_u32(struct TlvCreator* const creator, uint8_t const tag, uint32_t const val) {
     uint8_t* const tlv_data = tlv__add_tag(creator, tag, sizeof(val));
     ASSERTs(tlv_data != NULL, ER_OVERFLOW);
