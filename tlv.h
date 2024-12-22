@@ -30,7 +30,7 @@ typedef struct TlvCreator {
 
 int tlv__scan_init(struct TlvScan* scan, uint8_t const* buf, uint16_t size);
 struct Tlv const* tlv__next(struct TlvScan* scan);
-void tlv__reset_scan(struct TlvScan* scan);
+int tlv__reset_scan(struct TlvScan* scan);
 struct Tlv const* tlv__find(struct TlvScan* scan, uint8_t tag);
 int tlv__to_u8(struct TlvScan* scan, uint8_t tag, uint8_t* val);
 int tlv__to_bool(struct TlvScan* scan, uint8_t tag, bool* val);
