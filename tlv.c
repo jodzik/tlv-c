@@ -65,6 +65,7 @@ struct Tlv const* tlv__find(struct TlvScan* scan, uint8_t const tag) {
 
  finally:
 
+ 	UNUSED(rc);
     return NULL;
 }
 
@@ -185,6 +186,7 @@ uint8_t* tlv__add_tag_subtag(
 
  finally:
 
+ 	UNUSED(rc);
     return NULL;
 }
 
@@ -259,6 +261,21 @@ int tlv__add_tag_u32(struct TlvCreator* const creator, uint8_t const tag, uint32
 
     return 0;
 }
+
+int tlv__add_tag_u32_subtag(
+    struct TlvCreator* const creator,
+    uint8_t const tag,
+    uint8_t const subtag,
+    uint32_t const val)
+{
+    ASSERT(NULL != creator, ER_INVAL);
+    uint8_t* const tlv_data = tlv__add_tag_subtag(creator, tag, subtag, sizeof(val));
+    ASSERTs(tlv_data != NULL, ER_OVERFLOW);
+    u32_to_be(tlv_data, val);
+
+    return 0;
+}
+
 
 int tlv__add_tag_data(
     struct TlvCreator* const creator,
