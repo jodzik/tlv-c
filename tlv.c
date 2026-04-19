@@ -7,7 +7,7 @@
 #include <string.h>
 
 #ifdef __ZEPHYR__
-LOG_MODULE_REGISTER(tlv-c)
+LOG_MODULE_REGISTER(tlv_c);
 #endif
 
 int tlv__scan_init(struct TlvScan* const scan, uint8_t const* const buf, uint16_t const size) {
