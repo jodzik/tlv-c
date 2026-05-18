@@ -97,7 +97,7 @@ int tlv__to_u16(struct Tlv const* tlv, uint16_t* val) {
     ASSERT(NULL != tlv, ER_INVAL);
     ASSERT(NULL != val, ER_INVAL);
     ASSERTs(sizeof(*val) == tlv->len, ER_INVAL);
-    *val = u16_from_be(tlv->data);
+    *val = u16_from_le(tlv->data);
     return 0;
 }
 
@@ -105,7 +105,7 @@ int tlv__to_u32(struct Tlv const* tlv, uint32_t* val) {
     ASSERT(NULL != tlv, ER_INVAL);
     ASSERT(NULL != val, ER_INVAL);
     ASSERTs(sizeof(*val) == tlv->len, ER_INVAL);
-    *val = u32_from_be(tlv->data);
+    *val = u32_from_le(tlv->data);
     return 0;
 }
 
@@ -168,7 +168,7 @@ int tlv__to_u16_subtag(struct Tlv const* tlv, uint16_t* val, uint8_t* subtag) {
     ASSERT(NULL != subtag, ER_INVAL);
     ASSERTs(sizeof(*val) + 1 == tlv->len, ER_INVAL);
     *subtag = tlv->data[0];
-    *val = u16_from_be(&tlv->data[1]);
+    *val = u16_from_le(&tlv->data[1]);
     return 0;
 }
 
@@ -178,7 +178,7 @@ int tlv__to_u32_subtag(struct Tlv const* tlv, uint32_t* val, uint8_t* subtag) {
     ASSERT(NULL != subtag, ER_INVAL);
     ASSERTs(sizeof(*val) + 1 == tlv->len, ER_INVAL);
     *subtag = tlv->data[0];
-    *val = u32_from_be(&tlv->data[1]);
+    *val = u32_from_le(&tlv->data[1]);
     return 0;
 }
 
@@ -381,7 +381,7 @@ int tlv__add_tag_u16(struct TlvCreator* const creator, uint8_t const tag, uint16
     ASSERT(NULL != creator, ER_INVAL);ASSERT(NULL != creator, ER_INVAL);
     uint8_t* const tlv_data = tlv__add_tag(creator, tag, sizeof(val));
     ASSERTs(tlv_data != NULL, ER_OVERFLOW);
-    u16_to_be(tlv_data, val);
+    u16_to_le(tlv_data, val);
 
     return 0;
 }
@@ -395,7 +395,7 @@ int tlv__add_tag_u16_subtag(
     ASSERT(NULL != creator, ER_INVAL);
     uint8_t* const tlv_data = tlv__add_tag_subtag(creator, tag, subtag, sizeof(val));
     ASSERTs(tlv_data != NULL, ER_OVERFLOW);
-    u16_to_be(tlv_data, val);
+    u16_to_le(tlv_data, val);
 
     return 0;
 }
@@ -404,7 +404,7 @@ int tlv__add_tag_u32(struct TlvCreator* const creator, uint8_t const tag, uint32
     ASSERT(NULL != creator, ER_INVAL);
     uint8_t* const tlv_data = tlv__add_tag(creator, tag, sizeof(val));
     ASSERTs(tlv_data != NULL, ER_OVERFLOW);
-    u32_to_be(tlv_data, val);
+    u32_to_le(tlv_data, val);
 
     return 0;
 }
@@ -418,7 +418,16 @@ int tlv__add_tag_u32_subtag(
     ASSERT(NULL != creator, ER_INVAL);
     uint8_t* const tlv_data = tlv__add_tag_subtag(creator, tag, subtag, sizeof(val));
     ASSERTs(tlv_data != NULL, ER_OVERFLOW);
-    u32_to_be(tlv_data, val);
+    u32_to_le(tlv_data, val);
+
+    return 0;
+}
+
+int tlv__add_tag_u64(struct TlvCreator* const creator, uint8_t const tag, uint64_t const val) {
+    ASSERT(NULL != creator, ER_INVAL);
+    uint8_t* const tlv_data = tlv__add_tag(creator, tag, sizeof(val));
+    ASSERTs(tlv_data != NULL, ER_OVERFLOW);
+    u64_to_le(tlv_data, val);
 
     return 0;
 }
